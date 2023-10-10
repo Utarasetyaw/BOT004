@@ -252,31 +252,31 @@ function getUserAgent(){
 }
 
 
-function axemail($apikey, $receiver_email, $sender_name, $sender_email, $subject, $body, $html){
-	$curl = curl_init();
-	curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://nthanfp.me/api/post/sendMail/",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => "",
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 30,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => "POST",
-		CURLOPT_POSTFIELDS => "apikey=".$apikey."&receiver_email=".$receiver_email."&sender_name=".$sender_name."&sender_email=".$sender_email."&subject=".$subject."&body=".$body."&is_html=".$html."",
-		CURLOPT_HTTPHEADER => array(
-			"cache-control: no-cache",
-			"content-type: application/x-www-form-urlencoded"
-		),
-	));
-	$response = curl_exec($curl);
-	$err = curl_error($curl);
-	curl_close($curl);
-	if ($err) {
-		return "cURL Error #:" . $err;
-	} else {
-		return $response;
-	}
-}
+// function axemail($apikey, $receiver_email, $sender_name, $sender_email, $subject, $body, $html){
+// 	$curl = curl_init();
+// 	curl_setopt_array($curl, array(
+// 		CURLOPT_URL => "https://nthanfp.me/api/post/sendMail/",
+// 		CURLOPT_RETURNTRANSFER => true,
+// 		CURLOPT_ENCODING => "",
+// 		CURLOPT_MAXREDIRS => 10,
+// 		CURLOPT_TIMEOUT => 30,
+// 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+// 		CURLOPT_CUSTOMREQUEST => "POST",
+// 		CURLOPT_POSTFIELDS => "apikey=".$apikey."&receiver_email=".$receiver_email."&sender_name=".$sender_name."&sender_email=".$sender_email."&subject=".$subject."&body=".$body."&is_html=".$html."",
+// 		CURLOPT_HTTPHEADER => array(
+// 			"cache-control: no-cache",
+// 			"content-type: application/x-www-form-urlencoded"
+// 		),
+// 	));
+// 	$response = curl_exec($curl);
+// 	$err = curl_error($curl);
+// 	curl_close($curl);
+// 	if ($err) {
+// 		return "cURL Error #:" . $err;
+// 	} else {
+// 		return $response;
+// 	}
+// }
 
 function get_gravatar($email, $s = 80, $d = 'mp', $r = 'g', $img = false, $atts = array()) {
     $url = 'https://www.gravatar.com/avatar/';
