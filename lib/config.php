@@ -9,9 +9,9 @@ Jika akun terkena feedback_required tenang, tinggal tunggu 24 jam ntar pulih lag
 */
 
 //UBAH BAGIAN INI
-$countTarget    = '15'; //Ambil jumlah akun per target
-$sleep_1        = '30'; //Jeda per view story
-$sleep_2        = '35'; //Jeda per view story 1 akun user
+$countTarget    = rand(10,18); //Ambil jumlah akun per target
+$sleep_1        = rand(20,40); //Jeda per view story
+$sleep_2        = rand(35,70); //Jeda per view story 1 akun user
 //SAMPAI SINI AJA
 
 $answerFile		= 'storyAnswer.txt'; // FIle komentar mu
