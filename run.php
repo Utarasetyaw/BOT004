@@ -90,12 +90,21 @@ if ($cookie) {
 						$next_id = '0';
 					}
 				} while (count($listids) <= $limit);
+				// saveData('./data/datafollowers.txt', $listids[0]);
+				for ($i = 0; $i < count($listids); $i++)
+				{
+					echo $listids[$i] . "\n";
+				}
 				echo "[~] " . count($listids) . " followers of " . $target . " collected\n";
 				$reels		= array();
 				$reels_suc	= array();
+				
+
 				for ($i = 0; $i < count($listids); $i++) :
 					$getstory   = proccess(1, $useragent, 'feed/user/' . $listids[$i] . '/story/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
 					$getstory   = json_decode($getstory[1], true);
+					// echo $stories['id'];
+					// saveData('./data/storyscrap.txt', $stories['username']);
 					foreach ($getstory['reel']['items'] as $storyitem) :
 						$reels[count($reels)]	= $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
 						$stories['id']			= $storyitem['id'];
@@ -153,6 +162,7 @@ if ($cookie) {
 
 								if ($sendLike['status'] == 'ok') {
 									echo "[~] " . date('d-m-Y H:i:s') . " - Success send like for https://instagram.com/stories/" . $storyitem['user']['username'] . "/" . $storyitem['pk'] . "/\n";
+									saveData('./data/storySeen.txt' . date('d-m-Y') . '.txt', $storyitem['user']['username']);
 								} else {
 									var_dump($sendLike);
 									exit;
