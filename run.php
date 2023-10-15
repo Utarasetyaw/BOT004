@@ -91,10 +91,10 @@ if ($cookie) {
 					}
 				} while (count($listids) <= $limit);
 				// saveData('./data/datafollowers.txt', $listids[0]);
-				for ($i = 0; $i < count($listids); $i++)
-				{
-					echo $listids[$i] . "\n";
-				}
+				// for ($i = 0; $i < count($listids); $i++)
+				// {
+				// 	echo $listids[$i] . "\n";
+				// }
 				echo "[~] " . count($listids) . " followers of " . $target . " collected\n";
 				$reels		= array();
 				$reels_suc	= array();
@@ -162,7 +162,7 @@ if ($cookie) {
 
 								if ($sendLike['status'] == 'ok') {
 									echo "[~] " . date('d-m-Y H:i:s') . " - Success send like for https://instagram.com/stories/" . $storyitem['user']['username'] . "/" . $storyitem['pk'] . "/\n";
-									saveData('./data/storySeen.txt' . date('d-m-Y') . '.txt', $storyitem['user']['username']);
+									saveData('./data/storySeen.txt', $storyitem['user']['username']);
 								} else {
 									var_dump($sendLike);
 									exit;
@@ -191,7 +191,7 @@ if ($cookie) {
 				}
 				echo "\n\n";
 			}
-			if (count($today) > '19000') {
+			if (count($today) > 100 ) {
 				echo "[~] " . count($today) . " story reacted today\n";
 				echo "[~] Limit instagram api 2000 seen/day\n";
 				echo "[~] Sleep for 20 hour to bypass instagram limit\n";
