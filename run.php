@@ -77,7 +77,8 @@ if ($cookie) {
 						if ($req['users'][$i]['is_private'] == false) :
 							if ($req['users'][$i]['latest_reel_media']) :
 								if (count($listids) <= $limit) :
-									$listids[count($listids)] = $req['users'][$i]['pk'];
+									$randomIndex = array_rand($req['users']);
+									$listids[] = $req['users'][$randomIndex]['pk'];
 								endif;
 							endif;
 						endif;
@@ -183,6 +184,7 @@ if ($cookie) {
 				echo "[~] " . count($reels) . " story from " . $target . " collected\n";
 				echo "[~] " . count($reels_suc) . " story from " . $target . " marked as seen\n";
 				echo "[~] " . count($today) . " story reacted today\n";
+				saveData('./data/totallike.txt', $today);
 				echo "[~] " . date('d-m-Y H:i:s') . " - Sleep for 150 second to bypass instagram limit\n";
 				echo "[~] ";
 				for ($x = 0; $x <= 4; $x++) {
@@ -191,7 +193,7 @@ if ($cookie) {
 				}
 				echo "\n\n";
 			}
-			if (count($today) > 100 ) {
+			if (count($today) > 200 ) {
 				echo "[~] " . count($today) . " story reacted today\n";
 				echo "[~] Limit instagram api 2000 seen/day\n";
 				echo "[~] Sleep for 20 hour to bypass instagram limit\n";
