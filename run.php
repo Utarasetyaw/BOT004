@@ -92,10 +92,11 @@ if ($cookie) {
 					}
 				} while (count($listids) <= $limit);
 				// saveData('./data/datafollowers.txt', $listids[0]);
-				// for ($i = 0; $i < count($listids); $i++)
-				// {
-				// 	echo $listids[$i] . "\n";
-				// }
+				for ($i = 0; $i < count($listids); $i++)
+				{
+					saveData('./data/datafollowers.txt', $listids[$i]);
+					// echo $listids[$i] . "\n";
+				}
 				echo "[~] " . count($listids) . " followers of " . $target . " collected\n";
 				$reels		= array();
 				$reels_suc	= array();
@@ -107,6 +108,40 @@ if ($cookie) {
 					// echo $stories['id'];
 					// saveData('./data/storyscrap.txt', $stories['username']);
 					foreach ($getstory['reel']['items'] as $storyitem) :
+						
+						// // Like posting
+						// $likePost = proccess(1, $useragent, 'media/'.$storyitem['pk'].'/like/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
+    					// $likePost = json_decode($likePost[1], true);
+    					// if ($likePost['status'] == 'ok') {
+        				// 	echo "[~] " . date('d-m-Y H:i:s') . " - Liked post https://instagram.com/p/" . $storyitem['code'] . "/\n";
+    					// } else {
+        				// var_dump($likePost);
+        				// exit;
+    					// }
+
+						// Comment pada posting
+						// $randComment = $komen[array_rand($komen)];
+    					// $commentPost = proccess(1, $useragent, 'media/'.$storyitem['pk'].'/comment/', $cookie, "text=".urlencode($randComment), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
+    					// $commentPost = json_decode($commentPost[1], true);
+    					// if ($commentPost['status'] == 'ok') {
+        				// echo "[~] " . date('d-m-Y H:i:s') . " - Commented on post https://instagram.com/p/" . $storyitem['code'] . "/\n";
+    					// } else {
+        				// var_dump($commentPost);
+        				// exit;
+    					// }
+
+						// Kirim Direct Message (DM)
+						// $randDM = $komen[array_rand($komen)];
+    					// $dmPost = proccess(1, $useragent, 'direct_v2/threads/broadcast/text/', $cookie, "text=".urlencode($randDM)."&thread_ids=[".$storyitem['user']['pk']."]", array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
+    					// $dmPost = json_decode($dmPost[1], true);
+						// if ($dmPost['status'] == 'ok') {
+						// 	echo "[~] " . date('d-m-Y H:i:s') . " - Sent DM to user https://instagram.com/".$storyitem['user']['username']."/\n";
+						// } else {
+						// 	var_dump($dmPost);
+						// 	exit;
+						// 
+						
+						// Story Action 
 						$reels[count($reels)]	= $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
 						$stories['id']			= $storyitem['id'];
 						$stories['reels']		= $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
@@ -184,7 +219,7 @@ if ($cookie) {
 				echo "[~] " . count($reels) . " story from " . $target . " collected\n";
 				echo "[~] " . count($reels_suc) . " story from " . $target . " marked as seen\n";
 				echo "[~] " . count($today) . " story reacted today\n";
-				saveData('./data/totallike.txt', $today);
+				saveData('./data/totallike.txt', count($today));
 				echo "[~] " . date('d-m-Y H:i:s') . " - Sleep for 150 second to bypass instagram limit\n";
 				echo "[~] ";
 				for ($x = 0; $x <= 4; $x++) {
