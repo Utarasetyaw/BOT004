@@ -10,7 +10,6 @@ if ($cookie) {
 	$getakun	= proccess(1, $useragent, 'accounts/current_user/', $cookie);
 	$getakun	= json_decode($getakun[1], true);
 	if ($getakun['status'] == 'ok') {
-		//LOSS
 		$getakunV2	= proccess(1, $useragent, 'users/' . $getakun['user']['pk'] . '/info', $cookie);
 		$getakunV2	= json_decode($getakunV2[1], true);
 		echo "[~] Login as @" . $getakun['user']['username'] . " \n";
@@ -32,25 +31,19 @@ if ($cookie) {
 				$komens		= file_get_contents('./data/' . $answerFile);
 				$komen		= explode("\n", str_replace("\r", "", $komens));
 				$komen		= array($komen)[0];
-				//
 				$todays		= file_get_contents('./data/daily/' . date('d-m-Y') . '.txt');
 				$today		= explode("\n", str_replace("\r", "", $todays));
 				$today		= array($today)[0];
-				//
-				//$proxy		= file_get_contents('https://veonpanel.com/api/panel/proxy?key=MEMEF');
-				//$proxy		= json_decode($proxy, true);
-				//$prox['ip']			= $proxy['data']['proxy'];
 				$prox['ip']			= 0;
 				$prox['user']		= 0;
 				$prox['is_socks5']	= 0;
-				//
 				echo "[~] Get followers of " . $target . "\n";
-				//echo "[~] Proxy ".$prox['ip']."\n";
 				$targetid	= json_decode(request(1, $useragent, 'users/' . $target . '/usernameinfo/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5'])[1], 1)['user']['pk'];
 				$gettarget	= proccess(1, $useragent, 'users/' . $targetid . '/info', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
 				$gettarget	= json_decode($gettarget[1], true);
 				echo "[~] [Media : " . $gettarget['user']['media_count'] . "] [Follower : " . $gettarget['user']['follower_count'] . "] [Following : " . $gettarget['user']['following_count'] . "]\n";
-				$jumlah		= $countTarget;
+				$counttargertfix = rand(25,45);
+				$jumlah		= $counttargertfix;
 				if (!is_numeric($jumlah)) {
 					$limit = 1;
 				} elseif ($jumlah > ($gettarget['user']['follower_count'] - 1)) {
@@ -91,11 +84,19 @@ if ($cookie) {
 						$next_id = '0';
 					}
 				} while (count($listids) <= $limit);
-				// saveData('./data/datafollowers.txt', $listids[0]);
+				$username = array();
+				function findUsernameById($users, $targetId) {
+					foreach ($users as $user) {
+						if ($user['pk'] == $targetId) {
+							return $user['username'];
+						}
+					}
+						return null;
+					}
 				for ($i = 0; $i < count($listids); $i++)
 				{
-					saveData('./data/datafollowers.txt', $listids[$i]);
-					// echo $listids[$i] . "\n";
+					$username[$i] = findUsernameById($req['users'], $listids[$i]);
+					saveData('./data/datafollowers.txt', $i. " https://instagram.com/". $username[$i] . " DataScape from " . $target . " collected");
 				}
 				echo "[~] " . count($listids) . " followers of " . $target . " collected\n";
 				$reels		= array();
@@ -105,43 +106,7 @@ if ($cookie) {
 				for ($i = 0; $i < count($listids); $i++) :
 					$getstory   = proccess(1, $useragent, 'feed/user/' . $listids[$i] . '/story/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
 					$getstory   = json_decode($getstory[1], true);
-					// echo $stories['id'];
-					// saveData('./data/storyscrap.txt', $stories['username']);
 					foreach ($getstory['reel']['items'] as $storyitem) :
-						
-						// // Like posting
-						// $likePost = proccess(1, $useragent, 'media/'.$storyitem['pk'].'/like/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-    					// $likePost = json_decode($likePost[1], true);
-    					// if ($likePost['status'] == 'ok') {
-        				// 	echo "[~] " . date('d-m-Y H:i:s') . " - Liked post https://instagram.com/p/" . $storyitem['code'] . "/\n";
-    					// } else {
-        				// var_dump($likePost);
-        				// exit;
-    					// }
-
-						// Comment pada posting
-						// $randComment = $komen[array_rand($komen)];
-    					// $commentPost = proccess(1, $useragent, 'media/'.$storyitem['pk'].'/comment/', $cookie, "text=".urlencode($randComment), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-    					// $commentPost = json_decode($commentPost[1], true);
-    					// if ($commentPost['status'] == 'ok') {
-        				// echo "[~] " . date('d-m-Y H:i:s') . " - Commented on post https://instagram.com/p/" . $storyitem['code'] . "/\n";
-    					// } else {
-        				// var_dump($commentPost);
-        				// exit;
-    					// }
-
-						// Kirim Direct Message (DM)
-						// $randDM = $komen[array_rand($komen)];
-    					// $dmPost = proccess(1, $useragent, 'direct_v2/threads/broadcast/text/', $cookie, "text=".urlencode($randDM)."&thread_ids=[".$storyitem['user']['pk']."]", array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-    					// $dmPost = json_decode($dmPost[1], true);
-						// if ($dmPost['status'] == 'ok') {
-						// 	echo "[~] " . date('d-m-Y H:i:s') . " - Sent DM to user https://instagram.com/".$storyitem['user']['username']."/\n";
-						// } else {
-						// 	var_dump($dmPost);
-						// 	exit;
-						// 
-						
-						// Story Action 
 						$reels[count($reels)]	= $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
 						$stories['id']			= $storyitem['id'];
 						$stories['reels']		= $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
@@ -150,46 +115,6 @@ if ($cookie) {
 							$hook       = '{"live_vods_skipped": {}, "nuxes_skipped": {}, "nuxes": {}, "reels": {"' . $stories['reels'] . '": ["' . $stories['reel'] . '"]}, "live_vods": {}, "reel_media_skipped": {}}';
 							$viewstory  = proccess_v2(1, $useragent, 'media/seen/?reel=1&live_vod=0', $cookie, hook('' . $hook . ''), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
 							$viewstory  = json_decode($viewstory[1], true);
-							if ($storyitem['story_polls']) {
-								$stories['pool_id']	= $storyitem['story_polls'][0]['poll_sticker']['poll_id'];
-								$react_1	  		= proccess(1, $useragent, 'media/' . $stories['id'] . '/' . $stories['pool_id'] . '/story_poll_vote/', $cookie, hook('{"radio_type": "none", "vote": "' . rand(0, 1) . '"}'), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-								$react_1			= json_decode($react_1[1], true);
-								if ($react_1['status'] == 'ok') {
-									echo "[~] " . date('d-m-Y H:i:s') . " - Success polling for " . $stories['id'] . "\n";
-								}
-								//echo "[Stories Polls True : ".$stories['pool_id']." : ".$react_1[1]."] ";
-							}
-							if ($storyitem['story_questions']) {
-								$stories['question_id']	= $storyitem['story_questions'][0]['question_sticker']['question_id'];
-								$rand					= rand(0, count($komen) - 1);
-								$textAnswer 			= $komen[$rand];
-								$react_2	  			= proccess(1, $useragent, 'media/' . $stories['id'] . '/' . $stories['question_id'] . '/story_question_response/', $cookie, hook('{"response": "' . $textAnswer . '", "type": "text"}'), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-								$react_2				= json_decode($react_2[1], true);
-								if ($react_2['status'] == 'ok') {
-									echo "[~] " . date('d-m-Y H:i:s') . " - Question answer for " . $stories['id'] . " : " . $textAnswer . " \n";
-								}
-								//echo "[Stories Question True : ".$stories['question_id']." : ".$react_2[1]."] ";
-							}
-							if ($storyitem['story_countdowns']) {
-								$stories['countdown_id']	= $storyitem['story_countdowns'][0]['countdown_sticker']['countdown_id'];
-								$react_3	  				= proccess(1, $useragent, 'media/' . $stories['countdown_id'] . '/follow_story_countdown/', $cookie, 0, array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-								$react_3					= json_decode($react_3[1], true);
-								//echo "[Stories Countdown True : ".$stories['countdown_id']." : ".$react_3[1]."] ";
-							}
-							if ($storyitem['story_sliders']) {
-								$stories['slider_id']	= $storyitem['story_sliders'][0]['slider_sticker']['slider_id'];
-								$react_4	  			= proccess(1, $useragent, 'media/' . $stories['id'] . '/' . $stories['slider_id'] . '/story_slider_vote/', $cookie, hook('{"radio_type": "wifi-none", "vote": "1"}'), array(), $prox['ip'], $prox['user'], $prox['is_socks5']);
-								$react_4				= json_decode($react_4[1], true);
-								if ($react_2['status'] == 'ok') {
-									echo "[~] " . date('d-m-Y H:i:s') . " - Success sent slider for " . $stories['id'] . "\n";
-								}
-								//echo "[Stories Slider True : ".$stories['slider_id']." : ".$react_4[1]."] ";
-							}
-							if ($storyitem['story_quizs']) {
-								$stories['quiz_id']	= $storyitem['story_quizs'][0]['quiz_sticker']['quiz_id'];
-								//$react_5	  		= proccess(1, $useragent, 'media/'.$stories['id'].'/'.$stories['quiz_id'].'/story_poll_vote/', $cookie, hook('{"radio_type": "none", "vote": "'.rand(0,3).'"}'));
-								//echo "[Stories Quiz True : ".$stories['quiz_id']." : ".$react_5[1]."] ";
-							}
 							if ($viewstory['status'] == 'ok') {
 
 								// send like
@@ -198,28 +123,26 @@ if ($cookie) {
 
 								if ($sendLike['status'] == 'ok') {
 									echo "[~] " . date('d-m-Y H:i:s') . " - Success send like for https://instagram.com/stories/" . $storyitem['user']['username'] . "/" . $storyitem['pk'] . "/\n";
-									saveData('./data/storySeen.txt', $storyitem['user']['username']);
+									saveData('./data/storySeen.txt', $storyitem['user']['username']. " Like story from " . $target);
 								} else {
 									var_dump($sendLike);
 									exit;
 								}
-
 								$reels_suc[count($reels_suc)] = $storyitem['id'] . "_" . $getstory['reel']['user']['pk'];
-								echo "[~] " . date('d-m-Y H:i:s') . " - Seen stories " . $stories['id'] . " \n";
-								saveData('./data/storyData.txt', $stories['reels']);
-								saveData('./data/daily/' . date('d-m-Y') . '.txt', $stories['reels']);
+								echo "[~] " . date('d-m-Y H:i:s') . " - Seen stories " . $stories['id'] . " \n"
 							}
 							$new_run++;
-							sleep($sleep_1);
+							$sleepfix1 = rand(25,45);
+							sleep($sleepfix);
 						}
 					endforeach;
-					echo "[~] " . date('d-m-Y H:i:s') . " - Sleep for " . $sleep_2 . " second to bypass instagram limit== [$new_run] \n";
-					sleep($sleep_2);
+					$sleepfix = rand(25,45);
+					echo "[~] " . date('d-m-Y H:i:s') . " - Sleep for " . $sleepfix . " second to bypass instagram limit== [$new_run] \n";
+					sleep($sleepfix);
 				endfor;
 				echo "[~] " . count($reels) . " story from " . $target . " collected\n";
 				echo "[~] " . count($reels_suc) . " story from " . $target . " marked as seen\n";
 				echo "[~] " . count($today) . " story reacted today\n";
-				saveData('./data/totallike.txt', count($today));
 				echo "[~] " . date('d-m-Y H:i:s') . " - Sleep for 150 second to bypass instagram limit\n";
 				echo "[~] ";
 				for ($x = 0; $x <= 4; $x++) {
@@ -227,7 +150,10 @@ if ($cookie) {
 					sleep(30);
 				}
 				echo "\n\n";
+				saveData('./data/totaldatatarget.txt', count($reels) . " story from " . $target . " collected");
+				saveData('./data/totallike.txt', count($today));
 			}
+			
 			if (count($today) > 200 ) {
 				echo "[~] " . count($today) . " story reacted today\n";
 				echo "[~] Limit instagram api 2000 seen/day\n";
