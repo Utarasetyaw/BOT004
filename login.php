@@ -1,22 +1,6 @@
 <?php
 require('lib/config.php');
 echo " 
-
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        🅼🅰🆂🆂 🅻🅾🅾🅺🅴🆁 
-	
-	$---------$--------$
-	1.Mass story views without action block
-	2.Reacts to stories
-	3.Auto Poll reactions
-	4.Auto Question Ansewring
-	$---------$--------$
-	
-	\n";
-echo " $$$$$$$$$$ Auto  Story Viewer by Photolooz $$$$$$$$$$$$$$$$$$   \n";
-echo "  $-----$----$ Author @nthanfp Modified by 🤑 @mohsanjid 🤑 $----$---$  \n\n";
-echo " Subscribe my Youtube channel $ PhotoLooz $ for more videos--😍
- \n\n";
 echo "[?] Input your instagram username : ";
 $userig    = trim(fgets(STDIN, 1024));
 echo "[?] Input your instagram password : ";
