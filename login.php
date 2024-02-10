@@ -1,6 +1,5 @@
 <?php
 require('lib/config.php');
-echo " 
 echo "[?] Input your instagram username : ";
 $userig    = trim(fgets(STDIN, 1024));
 echo "[?] Input your instagram password : ";

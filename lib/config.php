@@ -17,7 +17,7 @@ $sleep_2        = rand(35,70); //Jeda per view story 1 akun user
 $answerFile		= 'storyAnswer.txt'; // FIle komentar mu
 $saveFile 		= 'logData.txt'; // File log
 $cookieFile 	= 'cookieData.txt'; // File cookie
-$targetFile 	= 'targetData.txt'; // File target
+$targetFile 	= 'targetData1.txt'; // File target
 $date 			= date("Y-m-d");
 $time 			= date("H:i:s");
 ?>
